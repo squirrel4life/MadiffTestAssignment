@@ -1,15 +1,22 @@
+using MadiffTestAssignment.Config;
 using MadiffTestAssignment.Services;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddOptions<ActionRulesConfig>()
+    .BindConfiguration("ActionRules")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
-builder.Services.AddSingleton<CardService>();
+builder.Services.AddSingleton<ICardService, CardService>();
+builder.Services.AddSingleton<ICardActionRegistry, CardActionRegistry>();
+builder.Services.AddSingleton<IAllowedActionsGenerator, AllowedActionsGenerator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -19,6 +26,8 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 var app = builder.Build();
 

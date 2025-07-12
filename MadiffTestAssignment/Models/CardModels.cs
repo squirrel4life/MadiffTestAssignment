@@ -1,20 +1,19 @@
-﻿namespace MadiffTestAssignment.Models
+﻿namespace MadiffTestAssignment.Models;
+
+public enum CardType
 {
-    public enum CardType
-    {
-        Prepaid,
-        Debit,
-        Credit
-    }
-    public enum CardStatus
-    {
-        Ordered,
-        Inactive,
-        Active,
-        Restricted,
-        Blocked,
-        Expired,
-        Closed
-    }
-    public record CardDetails(string CardNumber, CardType CardType, CardStatus CardStatus, bool IsPinSet);
+    Prepaid,
+    Debit,
+    Credit
 }
+public enum CardStatus
+{
+    Ordered,
+    Inactive,
+    Active,
+    Restricted,
+    Blocked,
+    Expired,
+    Closed
+}
+public record CardDetails(string CardNumber, CardType CardType, CardStatus CardStatus, bool IsPinSet);
