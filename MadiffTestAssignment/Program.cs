@@ -7,59 +7,65 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddOptions<ActionRulesConfig>()
-    .BindConfiguration("ActionRules")
-    .ValidateDataAnnotations()
-    .ValidateOnStart();
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    });
-builder.Services.Configure<ApiBehaviorOptions>(options =>
+public partial class Program
 {
-    options.InvalidModelStateResponseFactory = context =>
+    public static void Main(string[] args)
     {
-        var errorMessages = context.ModelState
-            .Values
-            .SelectMany(v => v.Errors)
-            .Select(e => e.ErrorMessage)
-            .ToList();
+        var builder = WebApplication.CreateBuilder(args);
 
-        throw new ValidationException(
-            errorMessages.Count != 0
-                ? string.Join("; ", errorMessages)
-                : "U³omne zapytanie");
-    };
-});
-builder.Services.AddSingleton<ICardService, CardService>();
-builder.Services.AddSingleton<ICardActionRegistry, CardActionRegistry>();
-builder.Services.AddSingleton<IAllowedActionsGenerator, AllowedActionsGenerator>();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "Card Actions API",
-        Version = "v1"
-    });
-    c.OperationFilter<SwaggerResponseDescriptionFilter>();
-});
+        builder.Services.AddOptions<ActionRulesConfig>()
+            .BindConfiguration("ActionRules")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.InvalidModelStateResponseFactory = context =>
+            {
+                var errorMessages = context.ModelState
+                    .Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                throw new ValidationException(
+                    errorMessages.Count != 0
+                        ? string.Join("; ", errorMessages)
+                        : "U³omne zapytanie");
+            };
+        });
+        builder.Services.AddSingleton<ICardService, CardService>();
+        builder.Services.AddSingleton<ICardActionRegistry, CardActionRegistry>();
+        builder.Services.AddSingleton<IAllowedActionsGenerator, AllowedActionsGenerator>();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Card Actions API",
+                Version = "v1"
+            });
+            c.OperationFilter<SwaggerResponseDescriptionFilter>();
+        });
 
-var app = builder.Build();
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+        var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Card Actions API v1");
-});
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseRouting();
-app.MapControllers();
-app.Run();
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Card Actions API v1");
+        });
+
+        app.UseRouting();
+        app.MapControllers();
+        app.Run();
+    }
+}
