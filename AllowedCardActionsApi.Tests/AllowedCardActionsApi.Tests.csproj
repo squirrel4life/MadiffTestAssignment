@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MadiffTestAssignment\MadiffTestAssignment.csproj" />
+    <ProjectReference Include="..\AllowedCardActionsApi\AllowedCardActionsApi.csproj" />
   </ItemGroup>
 
 </Project>

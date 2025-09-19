@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MadiffTestAssignment", "MadiffTestAssignment\MadiffTestAssignment.csproj", "{8D327C4A-8CF4-46DE-B804-F630ED3EF7AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllowedCardActionsApi", "AllowedCardActionsApi\AllowedCardActionsApi.csproj", "{8D327C4A-8CF4-46DE-B804-F630ED3EF7AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MadiffTestAssignment.Tests", "MadiffTestAssignment.Tests\MadiffTestAssignment.Tests.csproj", "{766054F5-349A-4B88-9978-FC015C1C8808}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllowedCardActionsApi.Tests", "AllowedCardActionsApi.Tests\AllowedCardActionsApi.Tests.csproj", "{766054F5-349A-4B88-9978-FC015C1C8808}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
